@@ -1,0 +1,52 @@
+@use '@angular/material' as mat;
+
+@include mat.core();
+
+// Define the palettes (using M3 default palettes)
+$my-primary: mat.$azure-palette;
+$my-tertiary: mat.$rose-palette;
+
+// Define the light theme
+$light-theme: mat.define-theme((color: (theme-type: light,
+                primary: $my-primary,
+                tertiary: $my-tertiary,
+            ),
+            typography: (brand-family: 'Roboto, "Helvetica Neue", sans-serif',
+                plain-family: 'Roboto, "Helvetica Neue", sans-serif',
+            ),
+        ));
+
+// Define the dark theme
+$dark-theme: mat.define-theme((color: (theme-type: dark,
+                primary: $my-primary,
+                tertiary: $my-tertiary,
+            ),
+        ));
+
+// Apply the light theme by default
+html {
+    @include mat.all-component-themes($light-theme);
+    @include mat.system-level-typography($light-theme);
+    @include mat.system-level-colors($light-theme);
+}
+
+// Apply dark theme colors when the system prefers dark mode
+@media (prefers-color-scheme: dark) {
+    html {
+        @include mat.all-component-colors($dark-theme);
+        @include mat.system-level-colors($dark-theme);
+    }
+}
+
+html,
+body {
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    background-color: var(--mat-sys-surface);
+    color: var(--mat-sys-on-surface);
+    transition: background-color 0.3s, color 0.3s;
+}
