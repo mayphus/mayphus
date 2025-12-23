@@ -1,0 +1,37 @@
+<div class="studio-container">
+  <ng-container *ngIf="authService.user$ | async as user; else loginPrompt">
+    <ng-container *ngIf="authService.isAuthorized$ | async; else unauthorizedPrompt">
+      <mat-card class="studio-card">
+        <mat-card-header>
+          <div mat-card-avatar class="user-avatar" [style.backgroundImage]="'url(' + user.photoURL + ')'"></div>
+          <mat-card-title>Studio</mat-card-title>
+          <mat-card-subtitle>Welcome back, {{ user.displayName }}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <p>You are in the authorized studio area. Only you can see this.</p>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-button color="warn" (click)="logout()">LOGOUT</button>
+        </mat-card-actions>
+      </mat-card>
+    </ng-container>
+  </ng-container>
+
+  <ng-template #loginPrompt>
+    <div class="login-center">
+      <h1>Mayphus Studio</h1>
+      <p>Please sign in to access the studio.</p>
+      <button mat-flat-button color="primary" (click)="login()">
+        <mat-icon>login</mat-icon> Sign in with Google
+      </button>
+    </div>
+  </ng-template>
+
+  <ng-template #unauthorizedPrompt>
+    <div class="login-center">
+      <h1>Access Denied</h1>
+      <p>Sorry, only the owner can access this area.</p>
+      <button mat-button color="primary" (click)="logout()">Back to Login</button>
+    </div>
+  </ng-template>
+</div>

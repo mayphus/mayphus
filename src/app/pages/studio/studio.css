@@ -1,0 +1,32 @@
+.studio-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+    padding: 20px;
+}
+
+.login-center {
+    text-align: center;
+}
+
+.studio-card {
+    max-width: 500px;
+    width: 100%;
+}
+
+.user-avatar {
+    background-size: cover;
+    border-radius: 50%;
+}
+
+h1 {
+    margin-bottom: 24px;
+    font-size: 2.5rem;
+    font-weight: 300;
+}
+
+p {
+    margin-bottom: 24px;
+    opacity: 0.7;
+}
