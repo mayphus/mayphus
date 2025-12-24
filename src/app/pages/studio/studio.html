@@ -1,37 +1,56 @@
 <div class="studio-container">
   <ng-container *ngIf="authService.user$ | async as user; else loginPrompt">
-    <ng-container *ngIf="authService.isAuthorized$ | async; else unauthorizedPrompt">
-      <mat-card class="studio-card">
-        <mat-card-header>
-          <div mat-card-avatar class="user-avatar" [style.backgroundImage]="'url(' + user.photoURL + ')'"></div>
-          <mat-card-title>Studio</mat-card-title>
-          <mat-card-subtitle>Welcome back, {{ user.displayName }}</mat-card-subtitle>
-        </mat-card-header>
-        <mat-card-content>
-          <p>You are in the authorized studio area. Only you can see this.</p>
-        </mat-card-content>
-        <mat-card-actions>
-          <button mat-button color="warn" (click)="logout()">LOGOUT</button>
-        </mat-card-actions>
-      </mat-card>
-    </ng-container>
+    
+    <!-- Chat Panel (Left) -->
+    <div class="chat-panel">
+      <div class="chat-messages" #scrollContainer>
+        <div *ngFor="let msg of chatMessages" class="message" [ngClass]="msg.role">
+          {{ msg.text }}
+        </div>
+        <div *ngIf="isLoading" class="loading">
+          <mat-spinner diameter="24"></mat-spinner>
+        </div>
+      </div>
+      
+      <div class="chat-input-area">
+        <mat-form-field appearance="outline" subscriptSizing="dynamic">
+          <input matInput 
+                 placeholder="Type instructions..." 
+                 [(ngModel)]="userInput" 
+                 (keyup.enter)="sendMessage()"
+                 [disabled]="isLoading">
+        </mat-form-field>
+        <button mat-icon-button color="primary" (click)="sendMessage()" [disabled]="!userInput.trim() || isLoading">
+          <mat-icon>send</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <!-- Canvas Panel (Right) -->
+    <div class="canvas-panel">
+      <div class="canvas-header">
+        <h2>Canvas</h2>
+        <div class="actions">
+           <!-- Placeholder actions -->
+           <button mat-icon-button (click)="copyToClipboard()">
+             <mat-icon>content_copy</mat-icon>
+           </button>
+        </div>
+      </div>
+      <textarea class="canvas-editor" 
+                [(ngModel)]="canvasContent" 
+                placeholder="Content will appear here..."></textarea>
+    </div>
+
   </ng-container>
 
   <ng-template #loginPrompt>
     <div class="login-center">
       <h1>Mayphus Studio</h1>
-      <p>Please sign in to access the studio.</p>
+      <p>Sign in to access your creative space.</p>
       <button mat-flat-button color="primary" (click)="login()">
         <mat-icon>login</mat-icon> Sign in with Google
       </button>
-    </div>
-  </ng-template>
-
-  <ng-template #unauthorizedPrompt>
-    <div class="login-center">
-      <h1>Access Denied</h1>
-      <p>Sorry, only the owner can access this area.</p>
-      <button mat-button color="primary" (click)="logout()">Back to Login</button>
     </div>
   </ng-template>
 </div>
